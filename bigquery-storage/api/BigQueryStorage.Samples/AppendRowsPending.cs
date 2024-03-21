@@ -59,6 +59,13 @@ public class AppendRowsPendingSample
                 AppendRowsResponse responseItem = appendRowResults.Current;
                 // Do something with responses.
                 Console.WriteLine($"Appending rows resulted in: {responseItem.AppendResult}");
+                // Log errors
+                if (responseItem.Error != null)
+                {
+                    await Console.Error.WriteLineAsync($"Appending rows resulted in an error: {responseItem.Error.Message}");
+                    foreach (RowError rowError in responseItem.RowErrors)
+                        await Console.Error.WriteLineAsync(rowError.ToString());
+                }
             }
             // The response stream has completed.
         });
